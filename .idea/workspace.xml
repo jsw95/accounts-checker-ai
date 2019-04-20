@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="65dd5864-9a84-4d82-9837-b32fc89e50bb" name="Default Changelist" comment="" />
+    <list default="true" id="65dd5864-9a84-4d82-9837-b32fc89e50bb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,16 +12,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/table_finder.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="492">
-              <caret line="107" column="23" selection-start-line="107" selection-start-column="23" selection-end-line="107" selection-end-column="23" />
+              <caret line="107" column="24" selection-start-line="107" selection-start-column="24" selection-end-line="107" selection-end-column="24" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -45,6 +52,9 @@
       <find>image</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -59,6 +69,7 @@
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -89,6 +100,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -151,9 +163,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1366" y="0" width="1920" height="1080" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49895397" visible="true" weight="0.110341154" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49895397" visible="true" weight="0.110341154" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24886191" />
       <window_info id="Favorites" order="2" sideWeight="0.501046" side_tool="true" weight="0.1456777" />
       <window_info id="Event Log" order="3" sideWeight="0.22610015" side_tool="true" weight="0.6901515" />
@@ -170,7 +181,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" x="0" y="0" width="430" height="852" id="Documentation" order="3" sideWeight="0.5036726" side_tool="true" weight="0.43062967" />
-      <window_info active="true" anchor="right" x="371" y="308" width="623" height="122" id="Run" order="4" sideWeight="0.4963274" visible="true" weight="0.47707888" />
+      <window_info anchor="right" x="371" y="308" width="623" height="122" id="Run" order="4" sideWeight="0.4963274" visible="true" weight="0.47707888" />
     </layout>
   </component>
   <component name="XDebuggerManager">
@@ -188,7 +199,7 @@
     <entry file="file://$PROJECT_DIR$/src/table_finder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="492">
-          <caret line="107" column="23" selection-start-line="107" selection-start-column="23" selection-end-line="107" selection-end-column="23" />
+          <caret line="107" column="24" selection-start-line="107" selection-start-column="24" selection-end-line="107" selection-end-column="24" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -201,6 +212,9 @@
           <caret line="18" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
