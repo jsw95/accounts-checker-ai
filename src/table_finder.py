@@ -29,14 +29,17 @@ label_image = label(cleared)
 fig, ax = plt.subplots(1, 2, figsize=(10, 6))
 ax[0].imshow(img, cmap='gray')
 
+box_locations = []
+
 for region in regionprops(label_image):
     # take regions with large enough areas
     if region.area >= 5000:
         # draw rectangle around segmented coins
 
-        minr, minc, maxr, maxc = region.bbox
 
-        # print()
+        minr, minc, maxr, maxc = region.bbox
+        top_left_corner = (minr, minc)
+        box_locations.append(top_left_corner)
 
         rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,
                                   fill=False, edgecolor='red', linewidth=0.5)
