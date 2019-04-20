@@ -10,7 +10,7 @@ from skimage.morphology import closing, square
 
 
 # img = io.imread("/home/jsw/Workspace/accounts/images/account_template.jpg", as_gray=True)
-# img = io.imread("/home/jsw/Workspace/accounts/images/easy_template.jpg", as_gray=True)
+img = io.imread("/home/jsw/Workspace/accounts/images/easy_template.jpg", as_gray=True)
 
 
 def draw_red_boxes(img):
@@ -72,4 +72,22 @@ def find_boxes(img):
     return box_locations
 
 
+def save_box_images(box_locations):
+
+    # print(box_locations)
+
+    sorted_box_locations = sorted(box_locations, key=lambda x: [x[0][0], x[0][1]])
+    # all_cols = [sorted_box_locations[i::6][:24] for i in range(6)]
+
+    for idx, box in enumerate(sorted_box_locations):
+        print(idx)
+        box_img = box[1]
+
+        plt.imshow(box_img)
+        io.imsave("images/box" + str(idx) + '.jpg', box_img)
+
+        # plt.show()
+
+bl = find_boxes(img)
+save_box_images(bl)
 

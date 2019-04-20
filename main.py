@@ -12,5 +12,5 @@ if __name__ == "__main__":
     boxes = find_boxes(img)
 
     coords_table = return_coords_table(boxes)
-
+    coords_table.to_csv("data/image_table.csv")
     print(coords_table)

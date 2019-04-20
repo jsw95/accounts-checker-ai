@@ -36,4 +36,4 @@ def return_coords_table(coords):
     return df
 
 
-# return_coords_table(c)
+
