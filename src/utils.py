@@ -1,4 +1,6 @@
 import pandas as pd
+from skimage import io
+import matplotlib.pyplot as plt
 
 l = ['marian', 'jane', '11', '11', 'loeki']
 
@@ -31,9 +33,14 @@ def return_coords_table(coords):
     df = df[df.columns[::-1]]
 
     df.columns = ['Col1', 'Col2', 'col3', 'col4', 'col5', 'col6']
-    # print(df)
 
     return df
+
+
+def plot_image(img):
+
+    plt.imshow(img, cmap='gray')
+    plt.show()
 
 
 
