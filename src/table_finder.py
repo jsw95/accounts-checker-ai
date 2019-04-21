@@ -59,7 +59,6 @@ def find_boxes(img):
     for region in regionprops(label_image):
         # take regions with large enough areas
         if region.area >= 5000:
-            # draw rectangle around segmented coins
 
             minr, minc, maxr, maxc = region.bbox
 
@@ -74,10 +73,7 @@ def find_boxes(img):
 
 def save_box_images(box_locations):
 
-    # print(box_locations)
-
     sorted_box_locations = sorted(box_locations, key=lambda x: [x[0][0], x[0][1]])
-    # all_cols = [sorted_box_locations[i::6][:24] for i in range(6)]
 
     for idx, box in enumerate(sorted_box_locations):
         print(idx)
@@ -88,6 +84,7 @@ def save_box_images(box_locations):
 
         # plt.show()
 
-bl = find_boxes(img)
-save_box_images(bl)
+
+# bl = find_boxes(img)
+# save_box_images(bl)
 
