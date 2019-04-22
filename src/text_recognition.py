@@ -55,6 +55,3 @@ def generate_features_from_character_set():
 
         with open('../data/chars/' + file[:-4] + '.txt', 'a') as f_out:
             np.savetxt(f_out, char_fv, fmt='%.6f')
-
-
-def draw_boxes(img):
