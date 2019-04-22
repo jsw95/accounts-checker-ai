@@ -2,10 +2,8 @@
 data/
 
 .idea*
-.idea/*
-images/*
 images/
 
-.git*
-.git/*
+.git/
 *scraps.py
+results.txt

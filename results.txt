@@ -1,0 +1,28 @@
+Benchmark Results with sklearn NearestCentroid, (b, e, o, r):
+
+
+              precision    recall  f1-score   support
+
+           0       0.37      0.58      0.45        12
+           1       0.68      0.37      0.48        75
+           2       0.29      0.43      0.34        49
+           3       0.36      0.38      0.37        42
+
+   micro avg       0.40      0.40      0.40       178
+   macro avg       0.42      0.44      0.41       178
+weighted avg       0.48      0.40      0.42       178
+
+
+
+Benchmark Results with sklearn MLPClassifier, (b, e, o, r):
+
+              precision    recall  f1-score   support
+
+           0       0.91      0.83      0.87        12
+           1       0.90      0.93      0.92        75
+           2       0.84      0.86      0.85        49
+           3       0.95      0.88      0.91        42
+
+   micro avg       0.89      0.89      0.89       178
+   macro avg       0.90      0.88      0.89       178
+weighted avg       0.89      0.89      0.89       178
