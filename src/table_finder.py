@@ -1,8 +1,6 @@
 from skimage import io
-import numpy as np
-from scipy import ndimage as ndi
 import matplotlib.pyplot as plt
-from skimage.filters import sobel, sobel_h, sobel_v, scharr, prewitt, threshold_otsu
+from skimage.filters import threshold_otsu
 import matplotlib.patches as mpatches
 from skimage.segmentation import clear_border
 from skimage.measure import label, regionprops
@@ -25,7 +23,6 @@ def draw_red_boxes(img):
     fig, ax = plt.subplots(1, 2, figsize=(10, 6))
     ax[0].imshow(img, cmap='gray')
 
-
     for region in regionprops(label_image):
 
         if region.area >= 5000:
@@ -35,16 +32,13 @@ def draw_red_boxes(img):
                                       fill=False, edgecolor='red', linewidth=0.5)
             ax[0].add_patch(rect)
 
-
     ax[1].imshow(img)
-
     ax[0].set_axis_off()
     plt.tight_layout()
     plt.show()
 
 
 def find_boxes(img):
-    # apply threshold
     thresh = threshold_otsu(img)
 
     bw = closing(img > (1.16 * thresh), square(1))  # Unstable
@@ -83,8 +77,3 @@ def save_box_images(box_locations):
         io.imsave("images/box" + str(idx) + '.jpg', box_img)
 
         # plt.show()
-
-
-# bl = find_boxes(img)
-# save_box_images(bl)
-

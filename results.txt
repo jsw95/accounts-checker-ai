@@ -26,3 +26,22 @@ Benchmark Results with sklearn MLPClassifier, (b, e, o, r):
    micro avg       0.89      0.89      0.89       178
    macro avg       0.90      0.88      0.89       178
 weighted avg       0.89      0.89      0.89       178
+
+0-10
+              precision    recall  f1-score   support
+
+           1       0.79      0.94      0.86        35
+           2       0.74      1.00      0.85        26
+           3       0.83      0.83      0.83        23
+           4       0.77      0.62      0.69        16
+           5       0.87      0.81      0.84        16
+           6       0.78      0.86      0.82        21
+           7       0.86      0.57      0.69        21
+           8       0.92      0.69      0.79        16
+           9       0.78      0.64      0.70        11
+          10       0.90      0.82      0.86        11
+
+   micro avg       0.81      0.81      0.81       196
+   macro avg       0.82      0.78      0.79       196
+weighted avg       0.81      0.81      0.80       196
+

@@ -7,3 +7,4 @@ images/
 .git/
 *scraps.py
 results.txt
+/models/
