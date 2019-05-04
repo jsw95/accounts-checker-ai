@@ -1,4 +1,4 @@
-from  skimage import io
+from skimage import io
 from skimage import filters
 import matplotlib.pyplot as plt
 import os
