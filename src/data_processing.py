@@ -1,59 +1,74 @@
-from skimage import io
-from skimage import filters
-import matplotlib.pyplot as plt
 import os
-from skimage import transform
 import numpy as np
-from src.utils import *
-from sklearn.model_selection import train_test_split
-
+from skimage import transform, io
+from skimage.filters import sobel, threshold_otsu
+from skimage.measure import label, regionprops
+from skimage.morphology import closing, square
+from skimage.segmentation import clear_border
 
 image_width = 36
 image_height = 36
 
 
-def transform_chars_for_training(char_img):
-    """Performs binary thresholding and returns a 1D numpy array of image"""
+def resize_img(img, img_size):
+    (ht, wt) = img_size
 
-    char_img = transform.resize(char_img, (image_height, image_width))
-    thresh = filters.threshold_mean(char_img)
-    char_img = char_img > thresh
-    # plot_image(char_img)
-    char_img = char_img.reshape((1, (image_height * image_width)))
+    (h, w) = img.shape
+    fx = w / wt
+    fy = h / ht
+    f = max(fx, fy)
+    new_size = (max(min(ht, int(h / f)), 1),
+                max(min(wt, int(w / f)), 1))  # scale according to f
+    new_img = transform.resize(img, new_size)
 
-    return char_img
+    # filling blank portions
+    target = np.ones([ht, wt])
+    target[0:new_size[0], 0:new_size[1]] = new_img
 
-
-def transform_char_set_for_training(folder_path):
-    """Takes in folder and returns list of all binary imgs in that folder"""
-
-    imgs = []
-
-    for file in os.listdir(folder_path):
-        img = io.imread(folder_path + '/' + file, as_grey=True)
-        img = transform_chars_for_training(img)
-
-        imgs.append(img)
-
-    return imgs
+    return target
 
 
-def create_training_set(folder_paths):
-    """Takes in list of folders of characters, return training and testing set"""
+def crop_text_in_box(box_img):
+    sobel_img = sobel(box_img)
+    thresh = threshold_otsu(sobel_img)
+    bw = closing(sobel_img > (0.8 * thresh), square(3))  # Unstable
 
-    feats, labels = False, False
+    cleared = clear_border(bw)
+    label_image = label(cleared)
 
-    for folder in folder_paths:
-        char_file = int(folder[-3:])
-        imgs = transform_char_set_for_training(folder)
+    words = []
 
-        X = np.array([[img] for img in imgs])
-        y = np.array([[char_file]] * len(imgs))
-        feats = np.concatenate((feats, X), axis=0) if feats is not False else X
-        labels = np.concatenate((labels, y), axis=0) if labels is not False else y
+    for idx, region in enumerate(regionprops(label_image)):
 
-    feats = np.reshape(feats, (feats.shape[0], feats.shape[-1]))
+        if region.area >= 10:
+            minr, minc, maxr, maxc = region.bbox
+            word = box_img[minr:maxr, minc:maxc]
+            words.append(word)
 
-    return feats, labels
+    return words
 
 
+def find_boxes(img):
+    thresh = threshold_otsu(img)
+
+    bw = closing(img > (1.16 * thresh), square(1))  # Unstable
+
+    cleared = clear_border(bw)
+
+    label_image = label(cleared)
+
+    box_locations = []
+
+    for region in regionprops(label_image):
+        # take regions with large enough areas
+        if region.area >= 5000:
+
+            minr, minc, maxr, maxc = region.bbox
+
+            loc = region.centroid
+
+            box_img = img[minr:maxr, minc:maxc]
+            loc_with_img = (loc, box_img)
+            box_locations.append(loc_with_img)
+
+    return box_locations
