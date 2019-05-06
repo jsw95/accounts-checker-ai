@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from src.data_processing import resize_img, crop_text_in_box
+from src.data_processing import resize_img, crop_text_in_box, word_to_tensor
 from skimage import io, img_as_ubyte
 import numpy as np
 from src.utils import plot_image
@@ -12,6 +12,10 @@ base_data_path = "/home/jack/Workspace/data/accounts/images/"
 def create_training_set():
     labels_df = pd.read_csv(f"{base_data_path}trainset/labels/words.csv", index_col=0)
 
+    filtered = labels_df.groupby('label').label.filter(lambda x: len(x) > 20)
+    labels_df.label = labels_df[labels_df.label.isin(filtered)]
+    labels_df.label = labels_df.label.apply(lambda x: word_to_tensor(x))
+
     feats = []
     for filename in os.listdir(f"{base_data_path}trainset/words/"):
         file = io.imread(f"{base_data_path}trainset/words/{filename}")
@@ -22,12 +26,12 @@ def create_training_set():
 
     joined = pd.merge(feats_df, labels_df, on='word_ref')
 
-    filtered = joined.groupby('label').label.filter(lambda x: len(x) > 20)
-    joined = joined[joined.label.isin(filtered)]
-
     return joined
 
+12
 
+df = create_training_set()
+df.to_csv(f"{base_data_path}../training_set.csv")
 
 def generate_training_folder(folder):
     files = get_img_files(folder)

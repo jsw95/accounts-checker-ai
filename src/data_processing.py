@@ -1,8 +1,8 @@
-import os
 import string
-import torch
+
 import numpy as np
-from skimage import transform, io
+import torch
+from skimage import transform
 from skimage.filters import sobel, threshold_otsu, threshold_mean
 from skimage.measure import label, regionprops
 from skimage.morphology import closing, square
@@ -64,7 +64,6 @@ def find_boxes(img):
     for region in regionprops(label_image):
         # take regions with large enough areas
         if region.area >= 5000:
-
             minr, minc, maxr, maxc = region.bbox
 
             loc = region.centroid
@@ -89,38 +88,16 @@ def transform_imgs_for_training(img):
 
 all_letters = string.ascii_letters + " .,;'\""
 n_letters = len(all_letters)
-# char_dict = {}
-# for idx, char in enumerate(all_chars):
-#     enc = [0.] * len(all_chars)
-#     enc[idx] = 1
-#     char_dict[char] = enc
-def letterToIndex(letter):
+
+
+def letter_to_index(letter):
     return all_letters.find(letter)
 
-# Just for demonstration, turn a letter into a <1 x n_letters> Tensor
-def letterToTensor(letter):
-    tensor = torch.zeros(1, n_letters)
-    tensor[0][letterToIndex(letter)] = 1
-    return tensor
 
 # Turn a line into a <line_length x 1 x n_letters>,
 # or an array of one-hot letter vectors
-def lineToTensor(line):
+def word_to_tensor(line):
     tensor = torch.zeros(len(line), 1, n_letters)
     for li, letter in enumerate(line):
-        tensor[li][0][letterToIndex(letter)] = 1
+        tensor[li][0][letter_to_index(letter)] = 1
     return tensor
-
-#
-# def encode_word(word):
-#     flatten = lambda l: [item for sublist in l for item in sublist]
-#
-#     word_encoded = np.array(flatten([char_dict[i] for i in word]))
-#     word_encoded = torch.from_numpy(word_encoded)
-#     print(word_encoded.size())
-#
-#     return word_encoded
-
-
-a = lineToTensor("t")
-print(a.shape)
