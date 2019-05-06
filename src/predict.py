@@ -3,7 +3,7 @@ from src.data_processing import *
 
 def load_model(model_name):
 
-    filename = '../models/' + model_name + ".sav"
+    filename = f'../models/{model_name}.sav'
     model = joblib.load(filename)
 
     return model

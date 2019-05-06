@@ -1,7 +1,9 @@
 import os
+import string
+import torch
 import numpy as np
 from skimage import transform, io
-from skimage.filters import sobel, threshold_otsu
+from skimage.filters import sobel, threshold_otsu, threshold_mean
 from skimage.measure import label, regionprops
 from skimage.morphology import closing, square
 from skimage.segmentation import clear_border
@@ -72,3 +74,53 @@ def find_boxes(img):
             box_locations.append(loc_with_img)
 
     return box_locations
+
+
+def transform_imgs_for_training(img):
+    """Performs binary thresholding and returns a 1D numpy array of image"""
+
+    img = transform.resize(img, (image_height, image_width))
+    thresh = threshold_mean(img)
+    img = img > thresh
+    img = img.reshape((1, (image_height * image_width)))
+
+    return img
+
+
+all_letters = string.ascii_letters + " .,;'\""
+n_letters = len(all_letters)
+# char_dict = {}
+# for idx, char in enumerate(all_chars):
+#     enc = [0.] * len(all_chars)
+#     enc[idx] = 1
+#     char_dict[char] = enc
+def letterToIndex(letter):
+    return all_letters.find(letter)
+
+# Just for demonstration, turn a letter into a <1 x n_letters> Tensor
+def letterToTensor(letter):
+    tensor = torch.zeros(1, n_letters)
+    tensor[0][letterToIndex(letter)] = 1
+    return tensor
+
+# Turn a line into a <line_length x 1 x n_letters>,
+# or an array of one-hot letter vectors
+def lineToTensor(line):
+    tensor = torch.zeros(len(line), 1, n_letters)
+    for li, letter in enumerate(line):
+        tensor[li][0][letterToIndex(letter)] = 1
+    return tensor
+
+#
+# def encode_word(word):
+#     flatten = lambda l: [item for sublist in l for item in sublist]
+#
+#     word_encoded = np.array(flatten([char_dict[i] for i in word]))
+#     word_encoded = torch.from_numpy(word_encoded)
+#     print(word_encoded.size())
+#
+#     return word_encoded
+
+
+a = lineToTensor("t")
+print(a.shape)
