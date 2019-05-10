@@ -76,6 +76,12 @@ def find_boxes(img):
     return box_locations
 
 
+def binary_threshold(img):
+    thresh = threshold_mean(img)
+    img = img > thresh
+
+    return img
+
 def transform_imgs_for_training(img):
     """Performs binary thresholding and returns a 1D numpy array of image"""
 
@@ -87,8 +93,8 @@ def transform_imgs_for_training(img):
     return img
 
 
-all_letters = string.ascii_letters + " .,;'\""
-n_letters = len(all_letters)
+# all_letters = string.ascii_letters + " .,;'\""
+# n_letters = len(all_letters)
 # char_dict = {}
 # for idx, char in enumerate(all_chars):
 #     enc = [0.] * len(all_chars)
@@ -122,5 +128,5 @@ def lineToTensor(line):
 #     return word_encoded
 
 
-a = lineToTensor("t")
-print(a.shape)
+# a = lineToTensor("t")
+# print(a.shape)

@@ -6,7 +6,8 @@ import numpy as np
 from src.utils import plot_image
 from src.data_processing import transform_imgs_for_training
 
-base_data_path = "/home/jack/Workspace/data/accounts/images/"
+# base_data_path = "/home/jack/Workspace/data/accounts/images/"
+base_data_path = "/home/jwells/data/accounts/"
 
 
 def create_training_set():

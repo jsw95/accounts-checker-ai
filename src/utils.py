@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 import pandas as pd
 from skimage.filters import threshold_otsu
 from skimage.measure import label, regionprops
@@ -52,7 +53,7 @@ def draw_red_boxes(img):
         if region.area >= 5000:
             minr, minc, maxr, maxc = region.bbox
 
-            rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,
+            rect = Rectangle((minc, minr), maxc - minc, maxr - minr,
                                       fill=False, edgecolor='red', linewidth=0.5)
             ax[0].add_patch(rect)
 
