@@ -75,6 +75,12 @@ def find_boxes(img):
     return box_locations
 
 
+def binary_threshold(img):
+    thresh = threshold_mean(img)
+    img = img > thresh
+
+    return img
+
 def transform_imgs_for_training(img):
     """Performs binary thresholding and returns a 1D numpy array of image"""
 
@@ -91,7 +97,13 @@ n_letters = len(all_letters)
 
 
 def letter_to_index(letter):
-    return all_letters.find(letter)
+    all_letters = string.ascii_letters + " .,;'\""
+    n_letters = len(all_letters)
+    char_dict = {}
+    for idx, char in enumerate(all_chars):
+        enc = [0.] * len(all_chars)
+        enc[idx] = 1
+        char_dict[char] = enc
 
 
 # Turn a line into a <line_length x 1 x n_letters>,
@@ -101,3 +113,15 @@ def word_to_tensor(line):
     for li, letter in enumerate(line):
         tensor[li][0][letter_to_index(letter)] = 1
     return tensor
+
+
+def encode_word(word):
+    flatten = lambda l: [item for sublist in l for item in sublist]
+
+    word_encoded = np.array(flatten([char_dict[i] for i in word]))
+    word_encoded = torch.from_numpy(word_encoded)
+    print(word_encoded.size())
+
+    return word_encoded
+
+
