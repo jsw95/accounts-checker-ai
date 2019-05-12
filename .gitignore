@@ -9,3 +9,4 @@ images/
 results.txt
 /models/
 /src/test.py
+src/play.py

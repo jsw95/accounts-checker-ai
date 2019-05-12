@@ -3,6 +3,7 @@ import string
 import numpy as np
 import torch
 from skimage import transform
+from skimage import io
 from skimage.filters import sobel, threshold_otsu, threshold_mean
 from skimage.measure import label, regionprops
 from skimage.morphology import closing, square
@@ -81,6 +82,31 @@ def binary_threshold(img):
 
     return img
 
+def split_characters(box_img):
+
+    sobel_img = sobel(box_img)
+    thresh = threshold_otsu(sobel_img)
+    bw = closing(sobel_img > (1.2 * thresh), square(1))  # Unstable
+
+    cleared = clear_border(bw)
+    label_image = label(cleared)
+
+    chars = []
+
+    for idx, region in enumerate(regionprops(label_image)):
+
+        if region.area >= 100:
+            minr, minc, maxr, maxc = region.bbox
+            char = box_img[minr:maxr, minc:maxc]
+
+            scaled_char = transform.resize(char, (image_height, image_width))
+
+            # io.imsave('../images/chars/char' + str(idx) + '.jpg', scaled_char)
+            chars.append(scaled_char)
+
+    return chars
+
+
 def transform_imgs_for_training(img):
     """Performs binary thresholding and returns a 1D numpy array of image"""
 
@@ -92,16 +118,16 @@ def transform_imgs_for_training(img):
     return img
 
 
-all_letters = string.ascii_letters + " .,;'\""
-n_letters = len(all_letters)
-
-
-def letter_to_index(letter):
-    char_dict = {}
-    for idx, char in enumerate(all_letters):
-        enc = [0.] * len(all_letters)
-        enc[idx] = 1
-        char_dict[char] = enc
+# all_letters = string.ascii_letters + " .,;'\""
+# n_letters = len(all_letters)
+#
+#
+# def letter_to_index(letter):
+#     char_dict = {}
+#     for idx, char in enumerate(all_letters):
+#         enc = [0.] * len(all_letters)
+#         enc[idx] = 1
+#         char_dict[char] = enc
 
 
 # Turn a line into a <line_length x 1 x n_letters>,
@@ -114,6 +140,7 @@ def letter_to_index(letter):
 
 
 def generate_char_dict():
+    all_letters = string.ascii_letters + " .,;'\""
     char_dict = {}
     for idx, char in enumerate(all_letters):
         char_dict[char] = idx
