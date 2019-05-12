@@ -1,13 +1,15 @@
 import os
+
 import pandas as pd
-from src.data_processing import resize_img, crop_text_in_box, word_to_tensor
 from skimage import io, img_as_ubyte
-import numpy as np
-from src.utils import plot_image
+
+from src.data_processing import resize_img, crop_text_in_box, word_to_tensor
 from src.data_processing import transform_imgs_for_training
 
-# base_data_path = "/home/jack/Workspace/data/accounts/images/"
-base_data_path = "/home/jwells/data/accounts/"
+base_data_path = "/home/jack/Workspace/data/accounts/images/"
+
+
+# base_data_path = "/home/jwells/data/accounts/"
 
 
 def create_training_set():
@@ -29,9 +31,6 @@ def create_training_set():
 
     return joined
 
-
-df = create_training_set()
-df.to_csv(f"{base_data_path}../training_set.csv")
 
 def generate_training_folder(folder):
     files = get_img_files(folder)

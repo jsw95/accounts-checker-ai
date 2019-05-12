@@ -97,31 +97,32 @@ n_letters = len(all_letters)
 
 
 def letter_to_index(letter):
-    all_letters = string.ascii_letters + " .,;'\""
-    n_letters = len(all_letters)
     char_dict = {}
-    for idx, char in enumerate(all_chars):
-        enc = [0.] * len(all_chars)
+    for idx, char in enumerate(all_letters):
+        enc = [0.] * len(all_letters)
         enc[idx] = 1
         char_dict[char] = enc
 
 
 # Turn a line into a <line_length x 1 x n_letters>,
 # or an array of one-hot letter vectors
-def word_to_tensor(line):
-    tensor = torch.zeros(len(line), 1, n_letters)
-    for li, letter in enumerate(line):
-        tensor[li][0][letter_to_index(letter)] = 1
-    return tensor
+# def word_to_tensor(line):
+#     tensor = torch.zeros(len(line), 1, n_letters)
+#     for li, letter in enumerate(line):
+#         tensor[li][0][letter_to_index(letter)] = 1
+#     return tensor
 
 
-def encode_word(word):
-    flatten = lambda l: [item for sublist in l for item in sublist]
+def generate_char_dict():
+    char_dict = {}
+    for idx, char in enumerate(all_letters):
+        char_dict[char] = idx
+    return char_dict
 
-    word_encoded = np.array(flatten([char_dict[i] for i in word]))
-    word_encoded = torch.from_numpy(word_encoded)
-    print(word_encoded.size())
 
-    return word_encoded
+def word_to_tensor(word, char_dict):
+    enc = [char_dict[c] for c in word]
+
+    return torch.Tensor(enc).to(torch.int64)
 
 
