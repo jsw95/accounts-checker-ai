@@ -1,25 +1,28 @@
 from sklearn.externals import joblib
+from pathlib import Path
+from src.torch_model import Net
 from src.data_processing import *
 
 def load_model(model_name):
 
-    filename = f'../models/{model_name}.sav'
-    model = joblib.load(filename)
+    net = Net()
+    filename = f'{Path(__file__).parent.parent}/models/{model_name}.sav'
+    net.load_state_dict(torch.load(filename))
+    net.eval()
 
-    return model
-
-
-m = load_model('MLP-digits')
-
+    return net
 
 
+net = load_model('first_')
+print(net.eval())
 
-base_img_dir = "/home/jsw/Workspace/accounts/images3"
-
-folders = [base_img_dir + i for i in os.listdir(base_img_dir) if int(i[-2:]) <= 10]
+char_list = generate_char_wip()
 
 
-feats, labels = create_training_set(folders)
-
-X_train, X_test, y_train, y_test = train_test_split(
-    feats, labels, test_size=0.33, random_state=42, stratify=labels)
+with torch.no_grad():
+    for img in char_list:
+        plot_image(img)
+        img = torch.from_numpy(img).unsqueeze(0).unsqueeze(0).to(torch.float32)
+        output = net(img)
+        _, predicted = torch.max(output.data, 1)
+        print(predicted)

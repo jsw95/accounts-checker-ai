@@ -3,33 +3,9 @@ import os
 import pandas as pd
 from skimage import io, img_as_ubyte
 
-from src.data_processing import resize_img, crop_text_in_box, word_to_tensor
-from src.data_processing import transform_imgs_for_training
+from src.data_processing import resize_img, crop_text_in_box
 
 base_data_path = "/home/jack/Workspace/data/accounts/images/"
-
-
-# base_data_path = "/home/jwells/data/accounts/"
-
-
-def create_training_set():
-    labels_df = pd.read_csv(f"{base_data_path}trainset/labels/words.csv", index_col=0)
-
-    filtered = labels_df.groupby('label').label.filter(lambda x: len(x) > 20)
-    labels_df.label = labels_df[labels_df.label.isin(filtered)]
-    labels_df.label = labels_df.label.apply(lambda x: word_to_tensor(x))
-
-    feats = []
-    for filename in os.listdir(f"{base_data_path}trainset/words/"):
-        file = io.imread(f"{base_data_path}trainset/words/{filename}")
-        img = transform_imgs_for_training(file)
-        feats.append((filename[:-4], img[0].astype(int)))
-
-    feats_df = pd.DataFrame(feats, columns=['word_ref', 'img'])
-
-    joined = pd.merge(feats_df, labels_df, on='word_ref')
-
-    return joined
 
 
 def generate_training_folder(folder):

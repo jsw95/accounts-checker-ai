@@ -1,5 +1,7 @@
 import string
+from src.utils import plot_image
 
+import os
 import numpy as np
 import torch
 from skimage import transform
@@ -29,6 +31,13 @@ def resize_img(img, img_size):
     target[0:new_size[0], 0:new_size[1]] = new_img
 
     return target
+
+
+def transform_image_for_training(img):
+    img = resize_img(img, (128, 128))
+    img = binary_threshold(img)
+
+    return img
 
 
 def crop_text_in_box(box_img):
@@ -86,7 +95,7 @@ def split_characters(box_img):
 
     sobel_img = sobel(box_img)
     thresh = threshold_otsu(sobel_img)
-    bw = closing(sobel_img > (1.2 * thresh), square(1))  # Unstable
+    bw = closing(sobel_img > (1.0 * thresh), square(1))  # Unstable
 
     cleared = clear_border(bw)
     label_image = label(cleared)
@@ -97,46 +106,13 @@ def split_characters(box_img):
 
         if region.area >= 100:
             minr, minc, maxr, maxc = region.bbox
-            char = box_img[minr:maxr, minc:maxc]
-
-            scaled_char = transform.resize(char, (image_height, image_width))
-
-            # io.imsave('../images/chars/char' + str(idx) + '.jpg', scaled_char)
-            chars.append(scaled_char)
+            if abs((minr - maxr) - (minc - maxc)) < 120:  # unstable check for long thin boxes
+                char = box_img[minr:maxr, minc:maxc]
+                # plot_image(char)
+                chars.append(char)
 
     return chars
 
-
-def transform_imgs_for_training(img):
-    """Performs binary thresholding and returns a 1D numpy array of image"""
-
-    img = transform.resize(img, (image_height, image_width))
-    thresh = threshold_mean(img)
-    img = img > thresh
-    img = img.reshape((1, (image_height * image_width)))
-
-    return img
-
-
-# all_letters = string.ascii_letters + " .,;'\""
-# n_letters = len(all_letters)
-#
-#
-# def letter_to_index(letter):
-#     char_dict = {}
-#     for idx, char in enumerate(all_letters):
-#         enc = [0.] * len(all_letters)
-#         enc[idx] = 1
-#         char_dict[char] = enc
-
-
-# Turn a line into a <line_length x 1 x n_letters>,
-# or an array of one-hot letter vectors
-# def word_to_tensor(line):
-#     tensor = torch.zeros(len(line), 1, n_letters)
-#     for li, letter in enumerate(line):
-#         tensor[li][0][letter_to_index(letter)] = 1
-#     return tensor
 
 
 def generate_char_dict():
@@ -147,9 +123,13 @@ def generate_char_dict():
     return char_dict
 
 
-def word_to_tensor(word, char_dict):
-    enc = [char_dict[c] for c in word]
+def generate_char_wip():
+    boxes_path = "/home/jack/Workspace/data/accounts/images/boxes"
+    boxes = [io.imread(f"{boxes_path}/{f}") for f in os.listdir(boxes_path)[11:15]]
+    char_list = []
+    for box in boxes:
+        chars = split_characters(box)
+        for char in chars:
+            char_list.append(transform_image_for_training(char))
 
-    return torch.Tensor(enc).to(torch.int64)
-
-
+    return char_list
