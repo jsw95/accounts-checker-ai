@@ -5,7 +5,10 @@ from skimage.filters import threshold_otsu
 from skimage.measure import label, regionprops
 from skimage.morphology import closing, square
 from skimage.segmentation import clear_border
-
+from skimage.transform import hough_transform, hough_line, hough_line_peaks, probabilistic_hough_line
+from matplotlib import cm
+from skimage.feature import canny
+import numpy as np
 
 def check_for_name(l):
     def check(pos):
@@ -59,5 +62,37 @@ def draw_red_boxes(img):
 
     ax[1].imshow(img)
     ax[0].set_axis_off()
+    plt.tight_layout()
+    plt.show()
+
+
+def hough_lines(img):
+    edges = canny(img, 2, 1, 25)
+    lines = probabilistic_hough_line(edges, threshold=10, line_length=5,
+                                     line_gap=3)
+
+    # Generating figure 1
+
+    # Generating figure 2
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharex=True, sharey=True)
+    ax = axes.ravel()
+
+    ax[0].imshow(img, cmap=cm.gray)
+    ax[0].set_title('Input image')
+
+    ax[1].imshow(edges, cmap=cm.gray)
+    ax[1].set_title('Canny edges')
+
+    ax[2].imshow(edges * 0)
+    for line in lines:
+        p0, p1 = line
+        ax[2].plot((p0[0], p1[0]), (p0[1], p1[1]))
+    ax[2].set_xlim((0, img.shape[1]))
+    ax[2].set_ylim((img.shape[0], 0))
+    ax[2].set_title('Probabilistic Hough')
+
+    for a in ax:
+        a.set_axis_off()
+
     plt.tight_layout()
     plt.show()
