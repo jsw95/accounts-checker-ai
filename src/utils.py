@@ -8,6 +8,8 @@ from skimage.segmentation import clear_border
 from skimage.transform import hough_transform, hough_line, hough_line_peaks, probabilistic_hough_line
 from matplotlib import cm
 from skimage.feature import canny
+from pytesseract import image_to_string
+
 import numpy as np
 
 def check_for_name(l):
@@ -21,16 +23,19 @@ def check_for_name(l):
     return [check(i) for i in range(len(l))]
 
 
-def return_coords_table(coords):
-    sorted_coords = sorted(coords, key=lambda x: [x[0][0], x[0][1]])
+def return_coords_table(boxes):
+    box_map = {str(loc): img for loc, img in boxes}
 
-    all_cols = [sorted_coords[i::6][:24] for i in range(6)]
+    sorted_coords = sorted(boxes, key=lambda x: [x[0][0], x[0][1]])
 
-    data = {str(i): all_cols[i] for i in range(6)}
+    cols_string = [image_to_string(box_map[str(i[0])]) for i in sorted_coords]
+    all_cols = [cols_string[i::6][:24] for i in range(6)]
 
     df = pd.DataFrame(all_cols).T
     df = df[df.columns[::-1]]
     df.columns = ['Col1', 'Col2', 'Col3', 'Col4', 'Col5', 'Col6']
+
+    # df.apply(lambda x: image_to_string(box_map[str(x)]))
 
     return df
 

@@ -79,7 +79,7 @@ def find_boxes(img):
             loc = region.centroid
 
             box_img = img[minr:maxr, minc:maxc]
-            loc_with_img = (loc, box_img)
+            loc_with_img = [loc, box_img]
             box_locations.append(loc_with_img)
 
     return box_locations
