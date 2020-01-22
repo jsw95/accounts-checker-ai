@@ -33,9 +33,8 @@ def return_coords_table(boxes):
 
     df = pd.DataFrame(all_cols).T
     df = df[df.columns[::-1]]
-    df.columns = ['Col1', 'Col2', 'Col3', 'Col4', 'Col5', 'Col6']
-
-    # df.apply(lambda x: image_to_string(box_map[str(x)]))
+    df.columns = df.iloc[0]
+    df = df.drop(df.index[0])
 
     return df
 
